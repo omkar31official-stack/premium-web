@@ -1,0 +1,3142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOIR & FLAME | Luxury Dining Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS CUSTOM PROPERTIES - COLOR PSYCHOLOGY
+           Deep crimson/burgundy = appetite stimulation
+           Black = luxury & exclusivity  
+           Gold/amber = premium quality & warmth
+           ============================================ */
+        :root {
+            /* Reds - appetite-stimulating, passion, warmth */
+            --crimson: #8B1A1A;
+            --deep-crimson: #6B0F0F;
+            --wine: #722F37;
+            --burgundy: #4A0E0E;
+            --blood: #6E1423;
+            --rose-dark: #85182A;
+            --ember: #9B2335;
+
+            /* Blacks - luxury, sophistication */
+            --void: #050505;
+            --obsidian: #0A0A0A;
+            --onyx: #111111;
+            --charcoal: #1A1A1A;
+            --graphite: #222222;
+            --slate: #2A2A2A;
+
+            /* Golds - premium, quality */
+            --gold: #C5A55A;
+            --gold-light: #D4B96B;
+            --gold-muted: #A68B3C;
+            --champagne: #F7E7CE;
+            --ivory: #FFFFF0;
+
+            /* Accent neutrals */
+            --cream: #F5E6D3;
+            --smoke: #888888;
+            --ash: #666666;
+            --mist: #AAAAAA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--crimson) var(--void);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--void);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--crimson);
+            border-radius: 4px;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--void);
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--crimson);
+            color: var(--cream);
+        }
+
+        /* ============================================
+           CUSTOM CURSOR
+           ============================================ */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--crimson);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            transition: transform 0.1s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-ring {
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid rgba(139, 26, 26, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 99998;
+            transition: all 0.15s ease-out;
+        }
+
+        .cursor-ring.hover {
+            width: 60px;
+            height: 60px;
+            border-color: var(--gold);
+            background: rgba(197, 165, 90, 0.05);
+        }
+
+        /* ============================================
+           PAGE LOADER
+           ============================================ */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--void);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            font-family: 'Italiana', serif;
+            font-size: 48px;
+            color: var(--cream);
+            letter-spacing: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--crimson);
+            transform: scaleX(0);
+            animation: loaderLine 2s ease-in-out forwards;
+        }
+
+        @keyframes loaderLine {
+            0% { transform: scaleX(0); transform-origin: left; }
+            50% { transform: scaleX(1); transform-origin: left; }
+            51% { transform-origin: right; }
+            100% { transform: scaleX(0); transform-origin: right; }
+        }
+
+        .loader-sub {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            letter-spacing: 8px;
+            color: var(--smoke);
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+
+        .loader-progress {
+            width: 200px;
+            height: 1px;
+            background: var(--slate);
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-progress::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, var(--crimson), var(--gold));
+            animation: loadProgress 2.5s ease-in-out forwards;
+        }
+
+        @keyframes loadProgress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10000;
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 5, 5, 0.92);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 15px 60px;
+            border-bottom: 1px solid rgba(139, 26, 26, 0.15);
+        }
+
+        .nav-logo {
+            font-family: 'Italiana', serif;
+            font-size: 24px;
+            color: var(--cream);
+            text-decoration: none;
+            letter-spacing: 8px;
+            position: relative;
+        }
+
+        .nav-logo .amp {
+            color: var(--crimson);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 28px;
+            margin: 0 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--mist);
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 400;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.4s;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, var(--crimson), var(--gold));
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-links a:hover {
+            color: var(--cream);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-reserve-btn {
+            padding: 10px 30px;
+            border: 1px solid var(--crimson);
+            color: var(--cream) !important;
+            font-size: 10px !important;
+            letter-spacing: 4px !important;
+            text-transform: uppercase;
+            transition: all 0.4s !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-reserve-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 26, 26, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-reserve-btn:hover::after {
+            left: 100%;
+        }
+
+        .nav-reserve-btn:hover {
+            background: var(--crimson);
+            border-color: var(--crimson);
+        }
+
+        .nav-reserve-btn::before {
+            display: none !important;
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            width: 30px;
+            height: 20px;
+            position: relative;
+            z-index: 10001;
+        }
+
+        .hamburger span {
+            position: absolute;
+            width: 100%;
+            height: 1.5px;
+            background: var(--cream);
+            left: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; width: 60%; right: 0; left: auto; }
+        .hamburger span:nth-child(3) { top: 18px; }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg);
+            top: 9px;
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            width: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg);
+            top: 9px;
+        }
+
+        /* Mobile Menu */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--void);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: right 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-nav.open {
+            right: 0;
+        }
+
+        .mobile-nav a {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: var(--cream);
+            text-decoration: none;
+            margin: 12px 0;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.4s ease;
+        }
+
+        .mobile-nav.open a {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mobile-nav.open a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-nav.open a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-nav.open a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-nav.open a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-nav.open a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-nav.open a:nth-child(6) { transition-delay: 0.35s; }
+
+        .mobile-nav a:hover {
+            color: var(--crimson);
+        }
+
+        /* ============================================
+           HERO SECTION - CINEMATIC
+           ============================================ */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-bg-img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            filter: brightness(0.35) contrast(1.1) saturate(0.8);
+        }
+
+        .hero-bg-img.active {
+            opacity: 1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at center, transparent 30%, rgba(5,5,5,0.7) 100%),
+                linear-gradient(180deg, rgba(5,5,5,0.3) 0%, transparent 40%, rgba(5,5,5,0.8) 100%);
+            z-index: 1;
+        }
+
+        /* Ambient particles */
+        .particles-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--crimson);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatParticle 8s infinite;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.3; }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(720deg);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 40px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeUp 1s 2.8s forwards;
+        }
+
+        .hero-badge .line {
+            width: 40px;
+            height: 1px;
+            background: var(--crimson);
+        }
+
+        .hero-badge span {
+            font-size: 11px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 400;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1.05;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: heroFadeUp 1.2s 3s forwards;
+        }
+
+        .hero-title .italic {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--crimson);
+        }
+
+        .hero-title .thin {
+            font-weight: 300;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .hero-desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: var(--mist);
+            line-height: 1.8;
+            max-width: 550px;
+            margin: 0 auto 45px;
+            font-weight: 300;
+            font-style: italic;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeUp 1s 3.3s forwards;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeUp 1s 3.5s forwards;
+        }
+
+        @keyframes heroFadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 16px 45px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 4px;
+            font-weight: 500;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-crimson {
+            background: var(--crimson);
+            color: var(--cream);
+        }
+
+        .btn-crimson::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--deep-crimson), var(--wine));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .btn-crimson:hover::before {
+            opacity: 1;
+        }
+
+        .btn-crimson:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(139, 26, 26, 0.4);
+        }
+
+        .btn-crimson span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(197, 165, 90, 0.4);
+            color: var(--gold);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(197, 165, 90, 0.08);
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(197, 165, 90, 0.1);
+        }
+
+        /* Hero scroll indicator */
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: heroFadeUp 1s 4s forwards;
+        }
+
+        .hero-scroll span {
+            font-size: 9px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--smoke);
+            writing-mode: vertical-rl;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            background: var(--crimson);
+            animation: scrollDown 2s infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { top: -30px; }
+            100% { top: 60px; }
+        }
+
+        /* ============================================
+           SECTION STYLES - GENERAL
+           ============================================ */
+        section {
+            padding: 120px 80px;
+            position: relative;
+        }
+
+        .section-label {
+            font-size: 10px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--crimson);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .section-label .line {
+            width: 30px;
+            height: 1px;
+            background: var(--crimson);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .section-title .italic {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--crimson);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            color: var(--smoke);
+            font-style: italic;
+            max-width: 500px;
+            margin: 0 auto 60px;
+            line-height: 1.6;
+        }
+
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-80px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(80px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ============================================
+           MARQUEE / TICKER
+           ============================================ */
+        .marquee-section {
+            padding: 25px 0;
+            background: var(--crimson);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: marquee 30s linear infinite;
+            white-space: nowrap;
+        }
+
+        .marquee-item {
+            font-family: 'Italiana', serif;
+            font-size: 16px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--cream);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-shrink: 0;
+        }
+
+        .marquee-item .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ============================================
+           ABOUT / STORY SECTION
+           ============================================ */
+        .story {
+            background: var(--obsidian);
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .story-visual {
+            position: relative;
+        }
+
+        .story-img-main {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            filter: brightness(0.85) contrast(1.05);
+        }
+
+        .story-img-float {
+            position: absolute;
+            width: 250px;
+            height: 300px;
+            object-fit: cover;
+            bottom: -40px;
+            right: -40px;
+            border: 8px solid var(--obsidian);
+            filter: brightness(0.9);
+        }
+
+        .story-year {
+            position: absolute;
+            top: 30px;
+            left: -30px;
+            font-family: 'Playfair Display', serif;
+            font-size: 100px;
+            font-weight: 700;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--crimson);
+            opacity: 0.4;
+            line-height: 1;
+        }
+
+        .story-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 25px;
+        }
+
+        .story-text h3 .italic {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--crimson);
+        }
+
+        .story-text p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            line-height: 2;
+            color: var(--smoke);
+            margin-bottom: 20px;
+        }
+
+        .story-signature {
+            margin-top: 35px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .signature-line {
+            width: 40px;
+            height: 1px;
+            background: var(--crimson);
+        }
+
+        .signature-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--gold);
+        }
+
+        .story-stats {
+            display: flex;
+            gap: 50px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(139, 26, 26, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--crimson);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--smoke);
+            margin-top: 8px;
+        }
+
+        /* ============================================
+           EXPERIENCE SECTION (Horizontal cards)
+           ============================================ */
+        .experience {
+            background: var(--void);
+            overflow: hidden;
+        }
+
+        .exp-cards {
+            display: flex;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .exp-cards::-webkit-scrollbar {
+            display: none;
+        }
+
+        .exp-card {
+            min-width: 380px;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            scroll-snap-align: start;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .exp-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s;
+            filter: brightness(0.5) saturate(0.7);
+        }
+
+        .exp-card:hover img {
+            transform: scale(1.1);
+            filter: brightness(0.35) saturate(0.9);
+        }
+
+        .exp-card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            background: linear-gradient(transparent 40%, rgba(5,5,5,0.9) 100%);
+        }
+
+        .exp-card-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 60px;
+            font-weight: 700;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--crimson);
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            opacity: 0.5;
+        }
+
+        .exp-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 10px;
+            transform: translateY(20px);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .exp-card:hover h4 {
+            transform: translateY(0);
+        }
+
+        .exp-card p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            color: var(--smoke);
+            font-style: italic;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+        }
+
+        .exp-card:hover p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .exp-card-line {
+            width: 40px;
+            height: 2px;
+            background: var(--crimson);
+            margin-top: 15px;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .exp-card:hover .exp-card-line {
+            width: 80px;
+        }
+
+        /* ============================================
+           MENU SECTION
+           ============================================ */
+        .menu-section {
+            background: var(--obsidian);
+            position: relative;
+        }
+
+        .menu-section::before {
+            content: 'MENU';
+            position: absolute;
+            top: 50%;
+            left: -60px;
+            transform: translateY(-50%) rotate(-90deg);
+            font-family: 'Playfair Display', serif;
+            font-size: 120px;
+            font-weight: 700;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(139, 26, 26, 0.1);
+            letter-spacing: 20px;
+            pointer-events: none;
+        }
+
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .menu-cat-btn {
+            padding: 12px 35px;
+            background: transparent;
+            border: 1px solid var(--slate);
+            color: var(--smoke);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-cat-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--crimson);
+            transform: translateX(-101%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .menu-cat-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-cat-btn.active::before,
+        .menu-cat-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .menu-cat-btn.active,
+        .menu-cat-btn:hover {
+            color: var(--cream);
+            border-color: var(--crimson);
+        }
+
+        .menu-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .menu-category {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 60px;
+        }
+
+        .menu-category.active {
+            display: grid;
+            animation: menuFade 0.6s ease;
+        }
+
+        @keyframes menuFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item {
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(42, 42, 42, 0.5);
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            padding-left: 15px;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(139, 26, 26, 0.08), transparent);
+            transition: width 0.4s;
+        }
+
+        .menu-item:hover::before {
+            width: 100%;
+        }
+
+        .menu-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-item-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .menu-item-dots {
+            flex: 1;
+            border-bottom: 1px dotted rgba(139, 26, 26, 0.3);
+            margin: 0 15px;
+            position: relative;
+            top: -5px;
+        }
+
+        .menu-item-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--crimson);
+            font-weight: 600;
+        }
+
+        .menu-item-desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            color: var(--ash);
+            font-style: italic;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-item-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-tag {
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border: 1px solid;
+            border-radius: 2px;
+        }
+
+        .menu-tag.signature {
+            border-color: var(--crimson);
+            color: var(--crimson);
+        }
+
+        .menu-tag.popular {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .menu-tag.veg {
+            border-color: #4a7c59;
+            color: #6aac7a;
+        }
+
+        .menu-tag.new {
+            border-color: var(--ember);
+            color: var(--ember);
+            background: rgba(155, 35, 53, 0.1);
+        }
+
+        /* ============================================
+           PARALLAX QUOTE SECTION
+           ============================================ */
+        .parallax-quote {
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(5,5,5,0.75), rgba(5,5,5,0.75)),
+                url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920') center/cover fixed;
+        }
+
+        .parallax-quote blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-style: italic;
+            font-weight: 400;
+            max-width: 800px;
+            line-height: 1.5;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        .parallax-quote blockquote::before {
+            content: '"';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 150px;
+            color: var(--crimson);
+            opacity: 0.3;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .parallax-quote cite {
+            display: block;
+            margin-top: 30px;
+            font-style: normal;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        /* ============================================
+           GALLERY / VISUAL SECTION
+           ============================================ */
+        .gallery-section {
+            background: var(--void);
+            padding: 120px 0;
+        }
+
+        .gallery-masonry {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 220px);
+            gap: 8px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
+        .gallery-item:nth-child(4) { grid-column: 3 / 5; grid-row: 2 / 4; }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s;
+            filter: brightness(0.7) saturate(0.8);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+            filter: brightness(0.5) saturate(1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item-overlay span {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--crimson);
+            padding-bottom: 5px;
+        }
+
+        /* ============================================
+           TESTIMONIALS
+           ============================================ */
+        .reviews-section {
+            background: var(--obsidian);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reviews-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .review-card {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .review-card.active {
+            display: block;
+            animation: reviewFade 0.8s ease;
+        }
+
+        @keyframes reviewFade {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .review-stars {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 30px;
+        }
+
+        .review-star {
+            width: 18px;
+            height: 18px;
+            background: var(--crimson);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .review-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-style: italic;
+            font-weight: 400;
+            line-height: 1.7;
+            color: var(--cream);
+            margin-bottom: 35px;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .review-author-line {
+            width: 30px;
+            height: 1px;
+            background: var(--crimson);
+        }
+
+        .review-author-name {
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .review-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .review-dot {
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--crimson);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 50%;
+        }
+
+        .review-dot.active {
+            background: var(--crimson);
+            transform: scale(1.2);
+        }
+
+        /* ============================================
+           RESERVATION SECTION
+           ============================================ */
+        .reserve-section {
+            background:
+                linear-gradient(rgba(5,5,5,0.88), rgba(5,5,5,0.88)),
+                url('https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=1920') center/cover fixed;
+            position: relative;
+        }
+
+        .reserve-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .reserve-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .reserve-info h3 .italic {
+            font-style: italic;
+            color: var(--crimson);
+        }
+
+        .reserve-info p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            color: var(--smoke);
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+
+        .reserve-details {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .reserve-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .reserve-detail-icon {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--crimson);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .reserve-detail-text h5 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .reserve-detail-text p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            color: var(--smoke);
+            font-style: normal;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .reserve-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border: 1px solid rgba(139, 26, 26, 0.15);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--crimson);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(42, 42, 42, 0.8);
+            color: var(--cream);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            transition: all 0.4s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--crimson);
+            background: rgba(139, 26, 26, 0.03);
+            box-shadow: 0 0 20px rgba(139, 26, 26, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group select option {
+            background: var(--onyx);
+        }
+
+        .form-submit {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* ============================================
+           INFO / HOURS / CONTACT
+           ============================================ */
+        .info-section {
+            background: var(--obsidian);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            text-align: center;
+            padding: 50px 35px;
+            border: 1px solid rgba(139, 26, 26, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--crimson), var(--gold), var(--crimson));
+            transform: scaleX(0);
+            transition: transform 0.5s;
+        }
+
+        .info-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .info-card:hover {
+            border-color: rgba(139, 26, 26, 0.3);
+            background: rgba(139, 26, 26, 0.03);
+        }
+
+        .info-card-icon {
+            font-size: 32px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .info-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .info-card p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            color: var(--smoke);
+            line-height: 2;
+        }
+
+        .info-card .highlight {
+            color: var(--crimson);
+            font-weight: 500;
+        }
+
+        /* ============================================
+           INSTAGRAM / SOCIAL FEED
+           ============================================ */
+        .social-section {
+            background: var(--void);
+            padding: 80px 0;
+        }
+
+        .social-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .social-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .social-header p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            color: var(--smoke);
+            font-style: italic;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+        }
+
+        .social-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .social-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s, filter 0.4s;
+            filter: brightness(0.7) saturate(0.6);
+        }
+
+        .social-item:hover img {
+            transform: scale(1.15);
+            filter: brightness(0.4) saturate(1);
+        }
+
+        .social-item::after {
+            content: '♥';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 24px;
+            color: var(--crimson);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .social-item:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            background: var(--void);
+            border-top: 1px solid rgba(139, 26, 26, 0.1);
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 80px;
+        }
+
+        .footer-brand .footer-logo {
+            font-family: 'Italiana', serif;
+            font-size: 28px;
+            color: var(--cream);
+            letter-spacing: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .footer-brand .footer-logo .amp {
+            color: var(--crimson);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .footer-brand p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            color: var(--ash);
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--slate);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--smoke);
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.4s;
+        }
+
+        .footer-social a:hover {
+            border-color: var(--crimson);
+            color: var(--crimson);
+            background: rgba(139, 26, 26, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .footer-col h5 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--crimson);
+            margin-bottom: 25px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            color: var(--ash);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-style: italic;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--cream);
+            padding-left: 8px;
+        }
+
+        .footer-newsletter p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            color: var(--ash);
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 13px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--slate);
+            color: var(--cream);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .newsletter-form input:focus {
+            border-color: var(--crimson);
+        }
+
+        .newsletter-form button {
+            padding: 13px 25px;
+            background: var(--crimson);
+            border: 1px solid var(--crimson);
+            color: var(--cream);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background: var(--deep-crimson);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(42, 42, 42, 0.5);
+            text-align: center;
+            padding: 25px;
+        }
+
+        .footer-bottom p {
+            font-size: 11px;
+            color: var(--ash);
+            letter-spacing: 2px;
+        }
+
+        /* ============================================
+           NOTIFICATION TOAST
+           ============================================ */
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 40px;
+            background: linear-gradient(135deg, var(--crimson), var(--deep-crimson));
+            color: var(--cream);
+            padding: 20px 35px;
+            z-index: 100001;
+            font-size: 13px;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 18px;
+            transform: translateX(150%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 3px solid var(--gold);
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* ============================================
+           MAGNETIC BUTTONS EFFECT CONTAINER
+           ============================================ */
+        .magnetic {
+            display: inline-block;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 1200px) {
+            .hero-title { font-size: 60px; }
+            .section-title { font-size: 42px; }
+            section { padding: 80px 50px; }
+        }
+
+        @media (max-width: 1024px) {
+            .story-grid { grid-template-columns: 1fr; gap: 40px; }
+            .story-year { display: none; }
+            .story-img-float { display: none; }
+            .gallery-masonry {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+            .gallery-item:nth-child(1),
+            .gallery-item:nth-child(4) {
+                grid-column: auto;
+                grid-row: auto;
+            }
+            .reserve-grid { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+                padding: 60px 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-ring { display: none; }
+
+            .nav {
+                padding: 15px 25px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            section {
+                padding: 60px 25px;
+            }
+
+            .hero-title {
+                font-size: 38px;
+            }
+
+            .hero-desc {
+                font-size: 16px;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .marquee-item {
+                font-size: 12px;
+                letter-spacing: 5px;
+            }
+
+            .exp-card {
+                min-width: 300px;
+                height: 400px;
+            }
+
+            .menu-category.active {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-categories {
+                gap: 8px;
+            }
+
+            .parallax-quote blockquote {
+                font-size: 24px;
+            }
+
+            .gallery-masonry {
+                grid-template-columns: 1fr;
+            }
+
+            .reserve-form {
+                grid-template-columns: 1fr;
+                padding: 30px;
+            }
+
+            .social-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                padding: 40px 25px;
+            }
+
+            .menu-section::before {
+                display: none;
+            }
+
+            .story-stats {
+                gap: 25px;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: 30px; }
+            .hero-badge span { font-size: 9px; letter-spacing: 4px; }
+            .section-title { font-size: 26px; }
+            .btn { padding: 14px 30px; font-size: 10px; }
+            .loader-logo { font-size: 32px; letter-spacing: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- PAGE LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-logo">NOIR <span style="color: var(--crimson); font-family: 'Playfair Display', serif; font-style: italic;">&</span> FLAME</div>
+        <div class="loader-sub">Preparing your experience</div>
+        <div class="loader-progress"></div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="nav" id="mainNav">
+        <a href="#" class="nav-logo">NOIR <span class="amp">&</span> FLAME</a>
+        <ul class="nav-links">
+            <li><a href="#story">Story</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#reserve" class="nav-reserve-btn">Reserve</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#story" onclick="toggleMobile()">Our Story</a>
+        <a href="#experience" onclick="toggleMobile()">Experience</a>
+        <a href="#menu" onclick="toggleMobile()">Menu</a>
+        <a href="#gallery" onclick="toggleMobile()">Gallery</a>
+        <a href="#reviews" onclick="toggleMobile()">Reviews</a>
+        <a href="#reserve" onclick="toggleMobile()">Reserve</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <img class="hero-bg-img active" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920" alt="Restaurant 1">
+            <img class="hero-bg-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920" alt="Restaurant 2">
+            <img class="hero-bg-img" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1920" alt="Restaurant 3">
+        </div>
+        <div class="hero-overlay"></div>
+
+        <div class="particles-container" id="particles"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="line"></span>
+                <span>Established 1998 • Fine Dining</span>
+                <span class="line"></span>
+            </div>
+            <h1 class="hero-title">
+                Where Every <span class="italic">Flame</span><br>
+                Tells a <span class="thin">Story</span>
+            </h1>
+            <p class="hero-desc">
+                An intimate culinary journey through bold flavors, rare ingredients,
+                and the ancient art of fire-kissed cuisine
+            </p>
+            <div class="hero-btns">
+                <a href="#menu" class="btn btn-crimson magnetic"><span>Explore Menu</span></a>
+                <a href="#reserve" class="btn btn-ghost magnetic">Book Your Table</a>
+            </div>
+        </div>
+
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-item">Fine Dining <span class="dot"></span></div>
+            <div class="marquee-item">Craft Cocktails <span class="dot"></span></div>
+            <div class="marquee-item">Private Events <span class="dot"></span></div>
+            <div class="marquee-item">Wine Cellar <span class="dot"></span></div>
+            <div class="marquee-item">Live Music <span class="dot"></span></div>
+            <div class="marquee-item">Chef's Table <span class="dot"></span></div>
+            <div class="marquee-item">Rooftop Terrace <span class="dot"></span></div>
+            <!-- Duplicate for seamless loop -->
+            <div class="marquee-item">Fine Dining <span class="dot"></span></div>
+            <div class="marquee-item">Craft Cocktails <span class="dot"></span></div>
+            <div class="marquee-item">Private Events <span class="dot"></span></div>
+            <div class="marquee-item">Wine Cellar <span class="dot"></span></div>
+            <div class="marquee-item">Live Music <span class="dot"></span></div>
+            <div class="marquee-item">Chef's Table <span class="dot"></span></div>
+            <div class="marquee-item">Rooftop Terrace <span class="dot"></span></div>
+        </div>
+    </div>
+
+    <!-- STORY -->
+    <section class="story" id="story">
+        <div class="section-label reveal">
+            <span class="line"></span>
+            <span>Our Story</span>
+            <span class="line"></span>
+        </div>
+        <h2 class="section-title reveal" style="margin-bottom: 60px;">A Legacy of <span class="italic">Passion</span></h2>
+
+        <div class="story-grid">
+            <div class="story-visual reveal-left">
+                <div class="story-year">1998</div>
+                <img class="story-img-main" src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800" alt="Our Story">
+                <img class="story-img-float" src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400" alt="Kitchen">
+            </div>
+            <div class="story-text reveal-right">
+                <h3>Born from <span class="italic">Fire</span>, Perfected by <span class="italic">Time</span></h3>
+                <p>In a hidden corner of the city, Chef Alessandro Noir first struck a match and ignited more than a flame — he ignited a philosophy. The belief that great dining is not merely about sustenance, but about transcendence.</p>
+                <p>For over two decades, Noir & Flame has stood as a testament to uncompromising quality, where every ingredient is sourced with intention and every dish is composed like a symphony.</p>
+
+                <div class="story-signature">
+                    <span class="signature-line"></span>
+                    <span class="signature-text">— Chef Alessandro Noir, Founder</span>
+                </div>
+
+                <div class="story-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="26">0</div>
+                        <div class="stat-label">Years</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="3">0</div>
+                        <div class="stat-label">Michelin Stars</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="48">0</div>
+                        <div class="stat-label">Awards</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="200">0</div>
+                        <div class="stat-label">Wine Labels</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE CARDS -->
+    <section class="experience" id="experience">
+        <div class="section-label reveal">
+            <span class="line"></span>
+            <span>Experiences</span>
+            <span class="line"></span>
+        </div>
+        <h2 class="section-title reveal">Curated <span class="italic">Moments</span></h2>
+        <p class="section-subtitle reveal">Every visit is designed to engage all senses</p>
+
+        <div class="exp-cards">
+            <div class="exp-card reveal-scale">
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600" alt="Fire Kitchen">
+                <div class="exp-card-overlay">
+                    <span class="exp-card-number">01</span>
+                    <h4>The Fire Kitchen</h4>
+                    <p>Open-flame cooking with ancient techniques and modern precision</p>
+                    <div class="exp-card-line"></div>
+                </div>
+            </div>
+            <div class="exp-card reveal-scale">
+                <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600" alt="Wine Vault">
+                <div class="exp-card-overlay">
+                    <span class="exp-card-number">02</span>
+                    <h4>The Wine Vault</h4>
+                    <p>200+ labels from the world's most celebrated vineyards</p>
+                    <div class="exp-card-line"></div>
+                </div>
+            </div>
+            <div class="exp-card reveal-scale">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600" alt="Private Dining">
+                <div class="exp-card-overlay">
+                    <span class="exp-card-number">03</span>
+                    <h4>Private Dining</h4>
+                    <p>Intimate spaces for celebrations that demand perfection</p>
+                    <div class="exp-card-line"></div>
+                </div>
+            </div>
+            <div class="exp-card reveal-scale">
+                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600" alt="Dessert Theatre">
+                <div class="exp-card-overlay">
+                    <span class="exp-card-number">04</span>
+                    <h4>Dessert Theatre</h4>
+                    <p>Live dessert preparation with theatrical presentation</p>
+                    <div class="exp-card-line"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section class="menu-section" id="menu">
+        <div class="section-label reveal">
+            <span class="line"></span>
+            <span>The Menu</span>
+            <span class="line"></span>
+        </div>
+        <h2 class="section-title reveal">Culinary <span class="italic">Artistry</span></h2>
+        <p class="section-subtitle reveal">Each dish is a masterpiece of flavor and technique</p>
+
+        <div class="menu-categories reveal">
+            <button class="menu-cat-btn active" onclick="switchMenu('appetizers')"><span>Appetizers</span></button>
+            <button class="menu-cat-btn" onclick="switchMenu('entrees')"><span>Entrées</span></button>
+            <button class="menu-cat-btn" onclick="switchMenu('seafood')"><span>Seafood</span></button>
+            <button class="menu-cat-btn" onclick="switchMenu('desserts')"><span>Desserts</span></button>
+            <button class="menu-cat-btn" onclick="switchMenu('drinks')"><span>Cocktails</span></button>
+        </div>
+
+        <div class="menu-container">
+            <!-- Appetizers -->
+            <div class="menu-category active" id="appetizers">
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Tuna Tartare</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$24</span>
+                    </div>
+                    <div class="menu-item-desc">Bluefin tuna, avocado mousse, yuzu, crispy shallots, sesame oil</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag signature">Signature</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Burrata & Flame Roasted Peppers</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$22</span>
+                    </div>
+                    <div class="menu-item-desc">Puglia burrata, charred bell peppers, aged balsamic, micro basil</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag popular">Popular</span>
+                        <span class="menu-tag veg">Vegetarian</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Foie Gras Torchon</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$32</span>
+                    </div>
+                    <div class="menu-item-desc">Hudson Valley foie gras, Sauternes gelée, toasted brioche, fig compote</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Charred Octopus</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$28</span>
+                    </div>
+                    <div class="menu-item-desc">Spanish octopus, smoked paprika, chorizo crumble, romesco, lemon oil</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag new">New</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Bone Marrow</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$26</span>
+                    </div>
+                    <div class="menu-item-desc">Roasted bone marrow, herb gremolata, caramelized onion, crostini</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Black Truffle Soup</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$30</span>
+                    </div>
+                    <div class="menu-item-desc">Double consommé, Périgord truffle, puff pastry dome, chive oil</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag signature">Signature</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Entrées -->
+            <div class="menu-category" id="entrees">
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Wagyu Ribeye A5</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$120</span>
+                    </div>
+                    <div class="menu-item-desc">Japanese A5 Wagyu, bone marrow butter, black garlic, truffle jus</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag signature">Signature</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Dry-Aged Tomahawk</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$95</span>
+                    </div>
+                    <div class="menu-item-desc">45-day dry-aged, roasted shallot, peppercorn sauce, pommes purée</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag popular">Popular</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Herb-Crusted Lamb Rack</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$62</span>
+                    </div>
+                    <div class="menu-item-desc">New Zealand lamb, rosemary crust, ratatouille, lamb jus reduction</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Duck Breast</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$48</span>
+                    </div>
+                    <div class="menu-item-desc">Moulard duck, cherry gastrique, celeriac purée, crispy kale</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag new">New</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Osso Buco</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$56</span>
+                    </div>
+                    <div class="menu-item-desc">Braised veal shank, saffron risotto milanese, gremolata</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Wild Mushroom Risotto</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$38</span>
+                    </div>
+                    <div class="menu-item-desc">Porcini, chanterelle, black truffle, aged Parmigiano, truffle oil</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag veg">Vegetarian</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seafood -->
+            <div class="menu-category" id="seafood">
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Whole Grilled Branzino</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$52</span>
+                    </div>
+                    <div class="menu-item-desc">Mediterranean sea bass, lemon, capers, herb butter, fennel</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag popular">Popular</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Maine Lobster Tail</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$78</span>
+                    </div>
+                    <div class="menu-item-desc">Butter-poached lobster, champagne beurre blanc, caviar, asparagus</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag signature">Signature</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Seared Scallops</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$45</span>
+                    </div>
+                    <div class="menu-item-desc">Hokkaido scallops, cauliflower purée, pancetta, brown butter, capers</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Chilean Sea Bass</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$58</span>
+                    </div>
+                    <div class="menu-item-desc">Miso-glazed, bok choy, ginger-scallion relish, dashi broth</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag new">New</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Oyster Selection</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$36</span>
+                    </div>
+                    <div class="menu-item-desc">Half dozen rotating selection, mignonette, cocktail sauce, lemon</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Seafood Tower</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$135</span>
+                    </div>
+                    <div class="menu-item-desc">Lobster, king crab, shrimp, oysters, clams, sashimi, caviar service</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag signature">For Two</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desserts -->
+            <div class="menu-category" id="desserts">
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Dark Chocolate Sphere</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$22</span>
+                    </div>
+                    <div class="menu-item-desc">Valrhona 72% sphere, warm raspberry coulis reveal, gold leaf, hazelnut</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag signature">Signature</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Crème Brûlée</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$16</span>
+                    </div>
+                    <div class="menu-item-desc">Tahitian vanilla, caramelized sugar crust, fresh berries</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag popular">Classic</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Tiramisu Deconstructed</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$18</span>
+                    </div>
+                    <div class="menu-item-desc">Espresso foam, mascarpone cloud, amaretto crumble, cocoa dust</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Soufflé au Grand Marnier</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$20</span>
+                    </div>
+                    <div class="menu-item-desc">Risen to perfection, crème anglaise, candied orange zest (25 min)</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag new">Must Order Early</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Cheese Selection</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$28</span>
+                    </div>
+                    <div class="menu-item-desc">Five artisanal cheeses, honeycomb, fig jam, candied nuts, crackers</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Affogato Noir</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$14</span>
+                    </div>
+                    <div class="menu-item-desc">Vanilla bean gelato, double espresso, dark chocolate shavings, amaretto</div>
+                </div>
+            </div>
+
+            <!-- Cocktails -->
+            <div class="menu-category" id="drinks">
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">The Noir</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$22</span>
+                    </div>
+                    <div class="menu-item-desc">Activated charcoal, aged rum, blackberry, lime, smoke essence</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag signature">House Signature</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Flame Old Fashioned</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$20</span>
+                    </div>
+                    <div class="menu-item-desc">Woodford Reserve, flamed orange peel, demerara, Angostura, cherry</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag popular">Popular</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Crimson Negroni</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$19</span>
+                    </div>
+                    <div class="menu-item-desc">Monkey 47 gin, Campari, sweet vermouth, blood orange twist</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Velvet Rose</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$18</span>
+                    </div>
+                    <div class="menu-item-desc">Rose-infused vodka, lychee, elderflower, champagne float, edible petals</div>
+                    <div class="menu-item-tags">
+                        <span class="menu-tag new">New</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Ember Sour</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$19</span>
+                    </div>
+                    <div class="menu-item-desc">Mezcal, passionfruit, lime, egg white foam, smoked chili rim</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-top">
+                        <span class="menu-item-name">Midnight Espresso Martini</span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">$20</span>
+                    </div>
+                    <div class="menu-item-desc">Grey Goose, Kahlúa, fresh espresso, vanilla, coffee bean garnish</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARALLAX QUOTE -->
+    <div class="parallax-quote reveal">
+        <blockquote>
+            Cooking is an art, but eating is the truest form of appreciation
+            <cite>— Chef Alessandro Noir</cite>
+        </blockquote>
+    </div>
+
+    <!-- GALLERY -->
+    <section class="gallery-section" id="gallery">
+        <div class="section-label reveal" style="padding: 0 80px;">
+            <span class="line"></span>
+            <span>Gallery</span>
+            <span class="line"></span>
+        </div>
+        <h2 class="section-title reveal" style="padding: 0 80px;">A Visual <span class="italic">Feast</span></h2>
+        <p class="section-subtitle reveal" style="padding: 0 80px;">Capturing moments of culinary excellence</p>
+
+        <div class="gallery-masonry">
+            <div class="gallery-item reveal-scale">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800" alt="Gallery 1">
+                <div class="gallery-item-overlay"><span>View</span></div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600" alt="Gallery 2">
+                <div class="gallery-item-overlay"><span>View</span></div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600" alt="Gallery 3">
+                <div class="gallery-item-overlay"><span>View</span></div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800" alt="Gallery 4">
+                <div class="gallery-item-overlay"><span>View</span></div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600" alt="Gallery 5">
+                <div class="gallery-item-overlay"><span>View</span></div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600" alt="Gallery 6">
+                <div class="gallery-item-overlay"><span>View</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="reviews-section" id="reviews">
+        <div class="section-label reveal">
+            <span class="line"></span>
+            <span>Testimonials</span>
+            <span class="line"></span>
+        </div>
+        <h2 class="section-title reveal">Guest <span class="italic">Voices</span></h2>
+        <p class="section-subtitle reveal">What our guests say about the experience</p>
+
+        <div class="reviews-container reveal">
+            <div class="review-card active">
+                <div class="review-stars">
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                </div>
+                <div class="review-text">"An experience that transcends dining. Every course was a revelation — the Wagyu literally melted on the palate, and the chocolate sphere dessert was pure theatre. This is not a restaurant; it's a destination."</div>
+                <div class="review-author">
+                    <span class="review-author-line"></span>
+                    <span class="review-author-name">Victoria Ashford, The Times Food Critic</span>
+                    <span class="review-author-line"></span>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                </div>
+                <div class="review-text">"We celebrated our 25th anniversary at Noir & Flame and the team made it unforgettable. Chef Alessandro personally curated our tasting menu. The wine pairing was impeccable. Already planning our return."</div>
+                <div class="review-author">
+                    <span class="review-author-line"></span>
+                    <span class="review-author-name">Robert & Catherine Ellis</span>
+                    <span class="review-author-line"></span>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                    <div class="review-star"></div>
+                </div>
+                <div class="review-text">"Three Michelin stars are not enough. The charred octopus alone is worth the journey from any corner of the world. Noir & Flame has redefined what luxury dining means in this century."</div>
+                <div class="review-author">
+                    <span class="review-author-line"></span>
+                    <span class="review-author-name">Marco Deluca, Condé Nast Traveler</span>
+                    <span class="review-author-line"></span>
+                </div>
+            </div>
+        </div>
+        <div class="review-nav">
+            <button class="review-dot active" onclick="showReview(0)"></button>
+            <button class="review-dot" onclick="showReview(1)"></button>
+            <button class="review-dot" onclick="showReview(2)"></button>
+        </div>
+    </section>
+
+    <!-- RESERVATION -->
+    <section class="reserve-section" id="reserve">
+        <div class="section-label reveal">
+            <span class="line"></span>
+            <span>Reservations</span>
+            <span class="line"></span>
+        </div>
+        <h2 class="section-title reveal">Secure Your <span class="italic">Table</span></h2>
+        <p class="section-subtitle reveal">Every evening is limited to ensure an intimate experience</p>
+
+        <div class="reserve-grid">
+            <div class="reserve-info reveal-left">
+                <h3>An Evening <span class="italic">Awaits</span></h3>
+                <p>Join us for an unforgettable culinary experience. We recommend booking at least two weeks in advance for weekend dining. Private dining rooms are available for parties of 8 or more.</p>
+
+                <div class="reserve-details">
+                    <div class="reserve-detail">
+                        <div class="reserve-detail-icon">📍</div>
+                        <div class="reserve-detail-text">
+                            <h5>Location</h5>
+                            <p>42 Ember Street, SoHo<br>New York, NY 10012</p>
+                        </div>
+                    </div>
+                    <div class="reserve-detail">
+                        <div class="reserve-detail-icon">🕐</div>
+                        <div class="reserve-detail-text">
+                            <h5>Dinner Service</h5>
+                            <p>Tuesday – Saturday: 5:30 PM – 11:00 PM<br>Sunday: 5:00 PM – 10:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="reserve-detail">
+                        <div class="reserve-detail-icon">📞</div>
+                        <div class="reserve-detail-text">
+                            <h5>Contact</h5>
+                            <p>+1 (212) 555-NOIR<br>reserve@noirandflame.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form class="reserve-form reveal-right" id="reserveForm" onsubmit="handleReserve(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" placeholder="+1 (555) 000-0000" required>
+                </div>
+                <div class="form-group">
+                    <label>Guests</label>
+                    <select required>
+                        <option value="">Select guests</option>
+                        <option>1 Guest</option>
+                        <option>2 Guests</option>
+                        <option>3 Guests</option>
+                        <option>4 Guests</option>
+                        <option>5 Guests</option>
+                        <option>6 Guests</option>
+                        <option>7+ Guests (Private Dining)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Date</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Time</label>
+                    <select required>
+                        <option value="">Select time</option>
+                        <option>5:30 PM</option>
+                        <option>6:00 PM</option>
+                        <option>6:30 PM</option>
+                        <option>7:00 PM</option>
+                        <option>7:30 PM</option>
+                        <option>8:00 PM</option>
+                        <option>8:30 PM</option>
+                        <option>9:00 PM</option>
+                        <option>9:30 PM</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label>Special Requests</label>
+                    <textarea placeholder="Dietary needs, celebrations, seating preferences..."></textarea>
+                </div>
+                <div class="form-submit">
+                    <button type="submit" class="btn btn-crimson magnetic"><span>Request Reservation</span></button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- INFO -->
+    <section class="info-section" id="contact">
+        <div class="info-grid">
+            <div class="info-card reveal">
+                <span class="info-card-icon">🍷</span>
+                <h4>Wine Program</h4>
+                <p>
+                    <span class="highlight">200+ Labels</span><br>
+                    Curated by our Sommelier<br>
+                    from Bordeaux, Burgundy, Napa,<br>
+                    Tuscany & beyond<br><br>
+                    <span class="highlight">Wine Pairing Available</span><br>
+                    $75 per person
+                </p>
+            </div>
+            <div class="info-card reveal">
+                <span class="info-card-icon">✨</span>
+                <h4>Private Events</h4>
+                <p>
+                    <span class="highlight">The Vault Room</span><br>
+                    Up to 16 guests<br><br>
+                    <span class="highlight">The Grand Salon</span><br>
+                    Up to 40 guests<br><br>
+                    <span class="highlight">Full Buyout</span><br>
+                    Up to 120 guests
+                </p>
+            </div>
+            <div class="info-card reveal">
+                <span class="info-card-icon">🎁</span>
+                <h4>Gift Experience</h4>
+                <p>
+                    <span class="highlight">Gift Cards</span><br>
+                    Available from $100<br><br>
+                    <span class="highlight">Tasting Experiences</span><br>
+                    5 or 9 course journey<br><br>
+                    <span class="highlight">Cooking Classes</span><br>
+                    With Chef Alessandro
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL / INSTAGRAM -->
+    <div class="social-section">
+        <div class="social-header reveal">
+            <h3>Follow the <span style="font-style: italic; color: var(--crimson);">Flame</span></h3>
+            <p>@noirandflame on Instagram</p>
+        </div>
+        <div class="social-grid">
+            <div class="social-item">
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400" alt="Social 1">
+            </div>
+            <div class="social-item">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400" alt="Social 2">
+            </div>
+            <div class="social-item">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" alt="Social 3">
+            </div>
+            <div class="social-item">
+                <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400" alt="Social 4">
+            </div>
+            <div class="social-item">
+                <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=400" alt="Social 5">
+            </div>
+            <div class="social-item">
+                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400" alt="Social 6">
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-main">
+            <div class="footer-brand">
+                <span class="footer-logo">NOIR <span class="amp">&</span> FLAME</span>
+                <p>A destination for those who understand that exceptional dining is the finest form of art. Every flame we ignite tells the story of passion, precision, and an unwavering commitment to perfection.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook">f</a>
+                    <a href="#" aria-label="Instagram">ig</a>
+                    <a href="#" aria-label="Twitter">x</a>
+                    <a href="#" aria-label="Pinterest">p</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>Navigate</h5>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#story">Our Story</a></li>
+                    <li><a href="#menu">The Menu</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#reserve">Reservations</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Experiences</h5>
+                <ul>
+                    <li><a href="#">Chef's Table</a></li>
+                    <li><a href="#">Wine Dinners</a></li>
+                    <li><a href="#">Private Events</a></li>
+                    <li><a href="#">Cooking Classes</a></li>
+                    <li><a href="#">Gift Cards</a></li>
+                    <li><a href="#">Catering</a></li>
+                </ul>
+            </div>
+            <div class="footer-col footer-newsletter">
+                <h5>The Inner Circle</h5>
+                <p>Receive exclusive invitations to wine dinners, seasonal menu launches, and members-only events.</p>
+                <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+                    <input type="email" placeholder="Your email" required>
+                    <button type="submit">Join</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 NOIR & FLAME. All rights reserved. Crafted with fire and finesse.</p>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         JAVASCRIPT - ANIMATIONS & INTERACTIONS
+         ============================================ -->
+    <script>
+        // ===== PAGE LOADER =====
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 2800);
+        });
+
+        // ===== CUSTOM CURSOR =====
+        const dot = document.getElementById('cursorDot');
+        const ring = document.getElementById('cursorRing');
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            dot.style.left = mouseX - 4 + 'px';
+            dot.style.top = mouseY - 4 + 'px';
+        });
+
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            ring.style.left = ringX - 20 + 'px';
+            ring.style.top = ringY - 20 + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        // Cursor hover effect on interactive elements
+        document.querySelectorAll('a, button, .exp-card, .gallery-item, .social-item, .menu-item').forEach(el => {
+            el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+            el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+        });
+
+        // ===== NAVBAR SCROLL =====
+        const nav = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // ===== MOBILE NAV =====
+        function toggleMobile() {
+            document.getElementById('hamburger').classList.toggle('active');
+            document.getElementById('mobileNav').classList.toggle('open');
+            document.body.style.overflow = document.getElementById('mobileNav').classList.contains('open') ? 'hidden' : '';
+        }
+
+        // ===== HERO BACKGROUND SLIDESHOW =====
+        const heroImages = document.querySelectorAll('.hero-bg-img');
+        let currentHeroImg = 0;
+
+        setInterval(() => {
+            heroImages[currentHeroImg].classList.remove('active');
+            currentHeroImg = (currentHeroImg + 1) % heroImages.length;
+            heroImages[currentHeroImg].classList.add('active');
+        }, 6000);
+
+        // ===== PARTICLES =====
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+            particle.style.width = (Math.random() * 3 + 1) + 'px';
+            particle.style.height = particle.style.width;
+            if (Math.random() > 0.5) particle.style.background = 'var(--gold)';
+            particlesContainer.appendChild(particle);
+        }
+
+        // ===== SCROLL REVEAL ANIMATIONS =====
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('active');
+                    }, index * 100);
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ===== COUNTER ANIMATION =====
+        const statNumbers = document.querySelectorAll('.stat-number');
+        let statsCounted = false;
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !statsCounted) {
+                    statsCounted = true;
+                    statNumbers.forEach(num => {
+                        const target = parseInt(num.dataset.target);
+                        let current = 0;
+                        const increment = target / 60;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(timer);
+                            }
+                            num.textContent = Math.floor(current) + (target > 10 ? '+' : '');
+                        }, 30);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(num => statsObserver.observe(num));
+
+        // ===== MENU TABS =====
+        function switchMenu(id) {
+            document.querySelectorAll('.menu-cat-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.menu-category').forEach(cat => cat.classList.remove('active'));
+            event.target.closest('.menu-cat-btn').classList.add('active');
+            document.getElementById(id).classList.add('active');
+        }
+
+        // ===== REVIEWS SLIDER =====
+        const reviews = document.querySelectorAll('.review-card');
+        const reviewDots = document.querySelectorAll('.review-dot');
+        let currentReview = 0;
+
+        function showReview(index) {
+            reviews.forEach(r => r.classList.remove('active'));
+            reviewDots.forEach(d => d.classList.remove('active'));
+            reviews[index].classList.add('active');
+            reviewDots[index].classList.add('active');
+            currentReview = index;
+        }
+
+        setInterval(() => {
+            currentReview = (currentReview + 1) % reviews.length;
+            showReview(currentReview);
+        }, 6000);
+
+        // ===== TOAST NOTIFICATION =====
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // ===== RESERVATION FORM =====
+        function handleReserve(e) {
+            e.preventDefault();
+            showToast('✓ Reservation request received. We\'ll confirm within 24 hours.');
+            e.target.reset();
+        }
+
+        // ===== NEWSLETTER =====
+        function handleNewsletter(e) {
+            e.preventDefault();
+            showToast('✓ Welcome to the Inner Circle. Expect something special soon.');
+            e.target.reset();
+        }
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ===== MAGNETIC BUTTON EFFECT =====
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // ===== PARALLAX ON SCROLL =====
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+                heroContent.style.opacity = 1 - scrolled / 700;
+            }
+        });
+
+        // ===== TILT EFFECT ON EXP CARDS =====
+        document.querySelectorAll('.exp-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+                const tiltX = (y - 0.5) * 10;
+                const tiltY = (x - 0.5) * -10;
+                card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                card.style.transition = 'transform 0.5s ease';
+                setTimeout(() => card.style.transition = '', 500);
+            });
+        });
+    </script>
+
+</body>
+</html>
+
